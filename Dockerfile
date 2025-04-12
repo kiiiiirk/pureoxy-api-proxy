@@ -1,14 +1,13 @@
-# Image officielle PHP avec Apache
 FROM php:8.1-apache
 
-# Copie les fichiers du dossier actuel vers le dossier de déploiement
-COPY . /var/www/html/
-
-# Active le mod_rewrite d'Apache (utile pour certains projets)
+# Active le module rewrite d'Apache
 RUN a2enmod rewrite
 
-# Définit les droits corrects pour Apache
-RUN chown -R www-data:www-data /var/www/html
+# Installe mysqli pour pouvoir se connecter à la base de données
+RUN docker-php-ext-install mysqli
 
-# Expose le port 80
-EXPOSE 80
+# Copie les fichiers dans le dossier web
+COPY . /var/www/html/
+
+# Donne les bons droits à Apache
+RUN chown -R www-data:www-data /var/www/html
